@@ -6,9 +6,10 @@ import os
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 load_dotenv()
-#SECRET_KEY = os.getenv('SECRET_KEY')
-SECRET_KEY = '_v859z*48ul(z^12k=*(!ld__p*z=wn!v5a^ahm@vk+2^yldr%'
-DEBUG = True
+
+SECRET_KEY = os.getenv('SECRET_KEY')
+
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
