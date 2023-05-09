@@ -1,75 +1,86 @@
-API YAMDB
+## Описание
 
-Клонировать репозиторий и перейти в него в командной строке:
+Проект предназначен для оценки книг, музыки и фильмов различных жанров. 
+Данный проект позволяет написать рецензию на произведение, а также оставить отзыв с присвоением оценки. 
 
-```
-git clone git@github.com:Zaariel91/api_yamdb.git
-```
+## Установка
 
-```
-cd api_yamdb
-```
+1. Проверьте наличие Docker
 
-Cоздать и активировать виртуальное окружение:
+   Убедитесь, что docker установлен на вашем устройстве выполнив команду:
 
-```
-python -m venv env
-```
+   ```bash
+   docker -v
+   ```
 
-```
-source env/bin/activate
-```
+   В случае отсутствия, скачать [Docker Desktop](https://www.docker.com/products/docker-desktop) для Mac или Windows. [Docker Compose](https://docs.docker.com/compose) будет установлен автоматически.
 
-```
-python3 -m pip install --upgrade pip
-```
+   Для Linux выполните следующие команды:
+   
+   ```bash
+   sudo apt install curl
+   curl -fsSL https://get.docker.com -o get-docker.sh
+   sh get-docker.sh  
+   ```
+   При необходимости воспользуйтесь официальной [инструкцией](https://docs.docker.com/engine/install/).
 
-Установить зависимости из файла requirements.txt:
+2. Клонируйте репозиторий на локальный компьютер
 
-```
-pip install -r requirement.txt
-```
+   ```bash
+   git clone https://github.com/egorcoders/infra_sp2.git
+   ```
 
-Выполнить миграции:
+3. В корневой директории создайте файл `.env`, согласно шаблону:
 
-```
-python manage.py migrate
-```
-```
-python manage.py migrate --run-syncdb
-```
+   ```bash
+   DB_ENGINE=django.db.backends.postgresql
+   DB_NAME=postgres
+   POSTGRES_USER=postgres
+   POSTGRES_PASSWORD=postgres
+   DB_HOST=db
+   DB_PORT=5432
+   ```
+   Также в файле укажите переменную `SECRET_KEY` со своим ключом. 
+   При необходимости сгенерируйте новый ключ (https://djecrety.ir/)
 
-Для импортирования базы-данных из csv-файла выполните следующие действия:
+4. Запустите `docker-compose`
 
-Установите модуль django-extensions:
+   Выполните из корневой директории команду:
 
-```
-pip install django-extensions
-```
+   ```bash
+   docker-compose up -d
+   ```
 
-Подключите модуль добавлением в INSTALLED_APPS вашего проекта в файл settings.py
+5.  Выполните миграции
 
-```
-INSTALLED_APPS = (
-    ...
-    'django_extensions',
-    ...
-)
-```
+   Создать и выполнить миграции:
 
-Выполните импорт csv
+   ```bash
+   docker-compose exec web python manage.py makemigrations
+   docker-compose exec web python manage.py migrate
+   ```
 
-```
-python manage.py runscript import_csv
-```
+6. Подгрузите статику для отображения стилей и картинок
 
-Запустить проект:
+   ```bash
+   docker-compose exec web python manage.py collectstatic --no-input
+   ```
 
-```
-python3 manage.py runserver
-```
+7. Заполните БД тестовыми данными из файла `fixtures.json`.
 
-Авторы: 
-<a href="https://github.com/Zaariel91">Николай</a>
-<a href="https://github.com/DarkAngeIx">Максим </a>
-<a href="https://github.com/Valentina-Kriakova">Валентина</a>
+   В директории `infra_sp2`. Выполните команду:
+
+   ```bash
+   docker-compose exec web python manage.py loaddata fixtures.json
+   ```
+
+8. Создайте суперпользователя
+
+   ```bash
+   docker-compose exec web python manage.py createsuperuser
+   ```
+
+9. Зайдите на (http://localhost/admin/) и убедитесь, что страница отображается полностью: статика подгрузилась;
+   Авторизуйтесь под аккаунтом суперпользователя и убедитесь, что миграции прошли успешно.
+   
+Проект запущен. Удачной работы.
