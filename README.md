@@ -27,7 +27,7 @@
 2. Клонируйте репозиторий на локальный компьютер
 
    ```bash
-   git clone https://github.com/egorcoders/infra_sp2.git
+   git clone git@github.com:Zaariel91/infra_sp2.git
    ```
 
 3. В корневой директории создайте файл `.env`, согласно шаблону:
