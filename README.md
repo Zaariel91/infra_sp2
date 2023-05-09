@@ -53,8 +53,6 @@
 
 5.  Выполните миграции
 
-   Создать и выполнить миграции:
-
    ```bash
    docker-compose exec web python manage.py makemigrations
    docker-compose exec web python manage.py migrate
